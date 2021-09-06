@@ -15,7 +15,7 @@
   
 <h2>Instructions<h2>
   
-  <h4>
+  <h1>
 
 <hr style="height:5px; border: 1px solid #ccc;">
   

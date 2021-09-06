@@ -1,1 +1,66 @@
-RegisterServerEvent('chat:init')RegisterServerEvent('chat:addTemplate')RegisterServerEvent('chat:addMessage')RegisterServerEvent('chat:addSuggestion')RegisterServerEvent('chat:removeSuggestion')RegisterServerEvent('_chat:messageEntered')RegisterServerEvent('chat:clear')RegisterServerEvent('__cfx_internal:commandFallback')AddEventHandler('_chat:messageEntered',function(a,b,c)if not c or not a then return end;TriggerEvent('chatMessage',source,a,c)if not WasEventCanceled()then TriggerClientEvent('chatMessage',-1,a,{255,255,255},c)end;print(a..'^7: '..c..'^7')end)AddEventHandler('__cfx_internal:commandFallback',function(d)local e=GetPlayerName(source)TriggerEvent('chatMessage',source,e,'/'..d)if not WasEventCanceled()then TriggerClientEvent('chatMessage',-1,e,{255,255,255},'/'..d)end;CancelEvent()end)local function f(g)if GetRegisteredCommands then local h=GetRegisteredCommands()local i={}for j,d in ipairs(h)do if IsPlayerAceAllowed(g,('command.%s'):format(d.name))then table.insert(i,{name='/'..d.name,help=''})end end;TriggerClientEvent('chat:addSuggestions',g,i)end end;AddEventHandler('chat:init',function()f(source)end)AddEventHandler('onServerResourceStart',function(k)Wait(500)for j,g in ipairs(GetPlayers())do f(g)end end)print('^3[^0 c-chat ^3]^0 Started')
+RegisterServerEvent('chat:init')
+RegisterServerEvent('chat:addTemplate')
+RegisterServerEvent('chat:addMessage')
+RegisterServerEvent('chat:addSuggestion')
+RegisterServerEvent('chat:removeSuggestion')
+RegisterServerEvent('_chat:messageEntered')
+RegisterServerEvent('chat:clear')
+RegisterServerEvent('__cfx_internal:commandFallback')
+
+AddEventHandler('_chat:messageEntered', function(author, color, message)
+    if not message or not author then
+        return
+    end
+
+    TriggerEvent('chatMessage', source, author, message)
+
+    if not WasEventCanceled() then
+        TriggerClientEvent('chatMessage', -1, author,  { 255, 255, 255 }, message)
+    end
+
+    print(author .. '^7: ' .. message .. '^7')
+end)
+
+AddEventHandler('__cfx_internal:commandFallback', function(command)
+    local name = GetPlayerName(source)
+
+    TriggerEvent('chatMessage', source, name, '/' .. command)
+
+    if not WasEventCanceled() then
+        TriggerClientEvent('chatMessage', -1, name, { 255, 255, 255 }, '/' .. command) 
+    end
+
+    CancelEvent()
+end)
+
+-- command suggestions for clients
+local function refreshCommands(player)
+    if GetRegisteredCommands then
+        local registeredCommands = GetRegisteredCommands()
+
+        local suggestions = {}
+
+        for _, command in ipairs(registeredCommands) do
+            if IsPlayerAceAllowed(player, ('command.%s'):format(command.name)) then
+                table.insert(suggestions, {
+                    name = '/' .. command.name,
+                    help = ''
+                })
+            end
+        end
+
+        TriggerClientEvent('chat:addSuggestions', player, suggestions)
+    end
+end
+
+AddEventHandler('chat:init', function()
+    refreshCommands(source)
+end)
+
+AddEventHandler('onServerResourceStart', function(resName)
+    Wait(500)
+
+    for _, player in ipairs(GetPlayers()) do
+        refreshCommands(player)
+    end
+end)

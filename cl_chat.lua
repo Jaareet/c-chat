@@ -1,1 +1,224 @@
-local a=false;local b=false;local c=true;local d=false;RegisterNetEvent('chatMessage')RegisterNetEvent('chat:addTemplate')RegisterNetEvent('chat:addMessage')RegisterNetEvent('chat:addSuggestion')RegisterNetEvent('chat:addSuggestions')RegisterNetEvent('chat:removeSuggestion')RegisterNetEvent('chat:clear')RegisterNetEvent('__cfx_internal:serverPrint')AddEventHandler('chatMessage',function(e,f,g)local h={g}if e~=""then table.insert(h,1,e)end;SendNUIMessage({type='ON_MESSAGE',message={color=f,multiline=true,args=h}})end)AddEventHandler('__cfx_internal:serverPrint',function(i)print(i)SendNUIMessage({type='ON_MESSAGE',message={templateId='print',multiline=true,args={i}}})end)AddEventHandler('chat:addMessage',function(j)j.bgcolor=j.color;SendNUIMessage({type='ON_MESSAGE',message=j})end)AddEventHandler('chat:addSuggestion',function(k,l,m)SendNUIMessage({type='ON_SUGGESTION_ADD',suggestion={name=k,help=l,params=m or nil}})end)AddEventHandler('chat:addSuggestions',function(n)for o,p in ipairs(n)do SendNUIMessage({type='ON_SUGGESTION_ADD',suggestion=p})end end)AddEventHandler('chat:removeSuggestion',function(k)SendNUIMessage({type='ON_SUGGESTION_REMOVE',name=k})end)AddEventHandler('chat:addTemplate',function(q,r)SendNUIMessage({type='ON_TEMPLATE_ADD',template={id=q,html=r}})end)AddEventHandler('chat:clear',function(k)SendNUIMessage({type='ON_CLEAR'})end)RegisterNUICallback('chatResult',function(s,t)a=false;SetNuiFocus(false)if not s.canceled then local q=PlayerId()local u,v,w=0,0x99,255;if s.message:sub(1,1)=='/'then ExecuteCommand(s.message:sub(2))else TriggerServerEvent('_chat:messageEntered',GetPlayerName(q),{u,v,w},s.message)end end;t('ok')end)local function x()if GetRegisteredCommands then local y=GetRegisteredCommands()local n={}for o,z in ipairs(y)do if IsAceAllowed(('command.%s'):format(z.name))then table.insert(n,{name='/'..z.name,help=''})end end;TriggerEvent('chat:addSuggestions',n)end end;local function A()local B={}for C=0,GetNumResources()-1 do local D=GetResourceByFindIndex(C)if GetResourceState(D)=='started'then local E=GetNumResourceMetadata(D,'chat_theme')if E>0 then local F=GetResourceMetadata(D,'chat_theme')local G=json.decode(GetResourceMetadata(D,'chat_theme_extra')or'null')if F and G then G.baseUrl='nui://'..D..'/'B[F]=G end end end end;SendNUIMessage({type='ON_UPDATE_THEMES',themes=B})end;AddEventHandler('onClientResourceStart',function(H)Wait(500)TriggerEvent("c-core_alertas:questalerta")x()A()end)AddEventHandler('onClientResourceStop',function(H)Wait(500)x()A()end)RegisterNUICallback('loaded',function(s,t)TriggerServerEvent('chat:init')x()A()d=true;t('ok')end)RegisterCommand('chat',function()SetTextChatEnabled(false)SetNuiFocus(false)if not a then a=true;b=true;SendNUIMessage({type='ON_OPEN'})end;if b then SetNuiFocus(true)b=false end;if d then local I=false;if IsScreenFadedOut()or IsPauseMenuActive()then I=true end;if I and not c or not I and c then c=I;SendNUIMessage({type='ON_SCREEN_STATE_CHANGE',shouldHide=I})end end end)RegisterKeyMapping('chat','Abre el chat','keyboard','T')print('^3[^0 c-chat ^3]^0 Started')
+local chatInputActive = false
+local chatInputActivating = false
+local chatHidden = true
+local chatLoaded = false
+
+RegisterNetEvent('chatMessage')
+RegisterNetEvent('chat:addTemplate')
+RegisterNetEvent('chat:addMessage')
+RegisterNetEvent('chat:addSuggestion')
+RegisterNetEvent('chat:addSuggestions')
+RegisterNetEvent('chat:removeSuggestion')
+RegisterNetEvent('chat:clear')
+
+-- internal events
+RegisterNetEvent('__cfx_internal:serverPrint')
+-- deprecated, use chat:addMessage
+AddEventHandler('chatMessage', function(author, color, text)
+    local args = {text}
+    if author ~= "" then
+        table.insert(args, 1, author)
+    end
+    SendNUIMessage({
+        type = 'ON_MESSAGE',
+        message = {
+            color = color,
+            multiline = true,
+            args = args
+        }
+    })
+end)
+
+AddEventHandler('__cfx_internal:serverPrint', function(msg)
+    print(msg)
+
+    SendNUIMessage({
+        type = 'ON_MESSAGE',
+        message = {
+            templateId = 'print',
+            multiline = true,
+            args = {msg}
+        }
+    })
+end)
+
+AddEventHandler('chat:addMessage', function(message)
+    message.bgcolor = message.color
+    SendNUIMessage({
+        type = 'ON_MESSAGE',
+        message = message
+    })
+end)
+
+AddEventHandler('chat:addSuggestion', function(name, help, params)
+    SendNUIMessage({
+        type = 'ON_SUGGESTION_ADD',
+        suggestion = {
+            name = name,
+            help = help,
+            params = params or nil
+        }
+    })
+end)
+
+AddEventHandler('chat:addSuggestions', function(suggestions)
+    for _, suggestion in ipairs(suggestions) do
+        SendNUIMessage({
+            type = 'ON_SUGGESTION_ADD',
+            suggestion = suggestion
+        })
+    end
+end)
+
+AddEventHandler('chat:removeSuggestion', function(name)
+    SendNUIMessage({
+        type = 'ON_SUGGESTION_REMOVE',
+        name = name
+    })
+end)
+
+AddEventHandler('chat:addTemplate', function(id, html)
+    SendNUIMessage({
+        type = 'ON_TEMPLATE_ADD',
+        template = {
+            id = id,
+            html = html
+        }
+    })
+end)
+
+AddEventHandler('chat:clear', function(name)
+    SendNUIMessage({
+        type = 'ON_CLEAR'
+    })
+end)
+
+RegisterNUICallback('chatResult', function(data, cb)
+    chatInputActive = false
+    SetNuiFocus(false)
+
+    if not data.canceled then
+        local id = PlayerId()
+
+        -- deprecated
+        local r, g, b = 0, 0x99, 255
+
+        if data.message:sub(1, 1) == '/' then
+            ExecuteCommand(data.message:sub(2))
+        else
+            TriggerServerEvent('_chat:messageEntered', GetPlayerName(id), {r, g, b}, data.message)
+        end
+    end
+
+    cb('ok')
+end)
+
+local function refreshCommands()
+    if GetRegisteredCommands then
+        local registeredCommands = GetRegisteredCommands()
+
+        local suggestions = {}
+
+        for _, command in ipairs(registeredCommands) do
+            if IsAceAllowed(('command.%s'):format(command.name)) then
+                table.insert(suggestions, {
+                    name = '/' .. command.name,
+                    help = ''
+                })
+            end
+        end
+
+        TriggerEvent('chat:addSuggestions', suggestions)
+    end
+end
+
+local function refreshThemes()
+    local themes = {}
+
+    for resIdx = 0, GetNumResources() - 1 do
+        local resource = GetResourceByFindIndex(resIdx)
+
+        if GetResourceState(resource) == 'started' then
+            local numThemes = GetNumResourceMetadata(resource, 'chat_theme')
+
+            if numThemes > 0 then
+                local themeName = GetResourceMetadata(resource, 'chat_theme')
+                local themeData = json.decode(GetResourceMetadata(resource, 'chat_theme_extra') or 'null')
+
+                if themeName and themeData then
+                    themeData.baseUrl = 'nui://' .. resource .. '/'
+                    themes[themeName] = themeData
+                end
+            end
+        end
+    end
+
+    SendNUIMessage({
+        type = 'ON_UPDATE_THEMES',
+        themes = themes
+    })
+end
+
+AddEventHandler('onClientResourceStart', function(resName)
+    Wait(500)
+    TriggerEvent("c-core_alertas:questalerta")
+    refreshCommands()
+    refreshThemes()
+end)
+
+AddEventHandler('onClientResourceStop', function(resName)
+    Wait(500)
+
+    refreshCommands()
+    refreshThemes()
+end)
+
+RegisterNUICallback('loaded', function(data, cb)
+    TriggerServerEvent('chat:init');
+
+    refreshCommands()
+    refreshThemes()
+
+    chatLoaded = true
+
+    cb('ok')
+end)
+
+RegisterCommand('chat', function()
+    SetTextChatEnabled(false)
+    SetNuiFocus(false)
+
+    if not chatInputActive then
+        chatInputActive = true
+        chatInputActivating = true
+
+        SendNUIMessage({
+            type = 'ON_OPEN'
+        })
+    end
+
+    if chatInputActivating then
+        SetNuiFocus(true)
+
+        chatInputActivating = false
+    end
+
+    if chatLoaded then
+        local shouldBeHidden = false
+
+        if IsScreenFadedOut() or IsPauseMenuActive() then
+            shouldBeHidden = true
+        end
+
+        if (shouldBeHidden and not chatHidden) or (not shouldBeHidden and chatHidden) then
+            chatHidden = shouldBeHidden
+
+            SendNUIMessage({
+                type = 'ON_SCREEN_STATE_CHANGE',
+                shouldHide = shouldBeHidden
+            })
+        end
+    end
+end)
+
+RegisterKeyMapping('chat', 'Abre el chat', 'keyboard', 'T')

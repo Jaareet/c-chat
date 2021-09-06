@@ -13,6 +13,12 @@
 
 <hr style="height:5px; border: 1px solid #ccc;">
   
+<h2>Instructions<h2>
+
+<hr style="height:5px; border: 1px solid #ccc;">
+  
+  <h4>Rename the Resource to chat</h4>
+  
 <div align = "left">
   <h4>PREVIEW</h4>  
   <hr style="height:5px; border: 1px solid #ccc;">

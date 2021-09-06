@@ -19,7 +19,7 @@
   
   <h4>Rename the Resource to chat</h4>
   
-  <h1>
+  <h2>
   
 <div align = "left">
   <h4>PREVIEW</h4>  

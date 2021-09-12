@@ -2,7 +2,7 @@ fx_version 'adamant'
 
 game 'gta5'
 
-description 'Fivem chat by canariodev#0001'
+description 'Fivem chat by ! canario™#0097'
 
 client_scripts {
     'cl_chat.lua'

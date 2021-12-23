@@ -1,25 +1,10 @@
 <div align="center">
-  
-  <h1>💻 - C-SHOP</h1>
-
-| Project        | URL           | Description |
-| ------------- |:-------------:|:--------------:|
-| C-SHOP      | [Discord](https://discord.gg/Td6GzBSU9y) | C-SHOP specialized in FiveM services. |
-| C-SHOP-WEBSITE | [WebSite](https://maincode-shop.es/) | C-SHOP Website |
 
 </h4>
   
-<h2>C-CHAT-DESIGN<h2>
+<h3>J-CHAT-DESIGN<h3>
 
 <hr style="height:5px; border: 1px solid #ccc;">
-  
-<h2>Instructions<h2>
-
-<hr style="height:5px; border: 1px solid #ccc;">
-  
-  <h4>Rename the Resource to chat</h4>
-  
-  <h2>
   
 <div align = "left">
   <h4>PREVIEW</h4>  

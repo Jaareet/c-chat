@@ -1,0 +1,157 @@
+.chat-window {
+	-webkit-animation-duration: 2s;
+	background-color: transparent !important;
+	height: 22%;
+	left: 0.8%;
+	max-width: 1000px;
+	position: absolute;
+	top: 1.5%;
+	width: 38%;
+}
+.chat-messages {
+	font-size: 1rem;
+	height: 95%;
+	margin: 1%;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	position: relative;
+}
+.chat-input {
+	animation: textarea 0.5s ease-in-out;
+	box-sizing: border-box;
+	left: 0.8%;
+	max-width: 1000px;
+	position: absolute;
+	top: 23.8%;
+	width: 38%;
+}
+.prefix {
+	font-size: 1.8vh;
+	left: 0.208%;
+	margin-top: 0.5%;
+	position: absolute;
+}
+textarea {
+	font-size:1.05rem;
+	display:block;
+	box-sizing:border-box;
+	padding:1%;
+	padding-left:1rem;
+	color:#fff;
+	background:#ffffff5d;
+	border-radius:10px;
+	-webkit-box-shadow:10px 9px 42px -5px rgba(0,0,0,0.52);
+	-moz-box-shadow:10px 9px 42px -5px rgba(0,0,0,0.52);
+	box-shadow:10px 9px 42px -5px rgba(0,0,0,0.397),0 0 10px rgba(0,0,0,0.4) inset;
+	text-shadow:0 0 5px #000;
+	border:none;
+	border-radius:5px;
+	width:75%;
+	height:3.15%;
+	overflow:hidden;
+	text-overflow:ellipsis
+}
+textarea:focus,
+input:focus {
+	outline: none;
+}
+.chat-s {
+	animation: bars 2s ease-in-out;
+	border-bottom: 1px solid rgba(150,150,150,0.5);
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+.msg {
+	animation: chatMessage 1s ease-in-out;
+	margin-bottom: 0.28%;
+}
+.multiline {
+	margin-left: 4%;
+	text-indent: -1.2rem;
+	white-space: pre-line;
+}
+.suggestions {
+	list-style-type:none;
+	padding:.5%;
+	padding-left:1.4%;
+	font-size:1.05rem;
+	box-sizing:border-box;
+	color:#fff;
+	border-radius:10px;
+	background:#03030385;
+	-webkit-box-shadow:10px 9px 42px -5px rgba(0,0,0,0.52);
+	-moz-box-shadow:10px 9px 42px -5px rgba(0,0,0,0.52);
+	box-shadow:10px 9px 42px -5px rgba(0,0,0,0.397);
+	border:2px solid #1d1d1d;
+	border-radius:5px;
+	width:75%;
+	animation:suggestions 2s ease-in-out
+}
+@font-face {
+	font-family: --c;
+	src: url(https://cdn.discordapp.com/attachments/797530806243295272/872501048630194196/BoxedMedium.ttf);
+}
+.color-0 {color: #ffffff;}
+.color-1 {color: #ff4444;}
+.color-2 {color: #99cc00;}
+.color-3 {color: #ffbb33;}
+.color-4 {color: #0099cc;}
+.color-5 {color: #33b5e5;}
+.color-6 {color: #aa66cc;}
+.color-8 {color: #cc0000;}
+.color-9 {color: #cc0068;}
+.help {color: #b0bbbd;}
+.disabled {color: #b0bbbd;}
+.suggestion {margin-bottom: 0.5%;}
+.hidden {display: none;}
+.no-grow {flex-grow: 0;}
+* {
+	font-family: --c;
+	margin: 0;
+	padding: 0;
+}
+em {
+	font-style: normal;
+}
+#app {
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	color: white;
+}
+@keyframes chatMessage{
+	0% {
+		transform: translateX(-50rem);
+	}
+	100% {
+		transform: translateX(0);
+	}
+}
+@keyframes textarea{
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+@keyframes suggestions{
+	0% {
+		opacity: 1;
+	}
+	50% {
+		display: none;
+		transform: translateY(5rem);
+		opacity: 1;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+@keyframes bars{
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}

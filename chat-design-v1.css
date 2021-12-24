@@ -23,9 +23,11 @@
 	max-width: 1000px;
 	position: absolute;
 	top: 23.8%;
-	width: 38%;
+	width: 28%;
+	border-radius: .5vw;
 }
 .prefix {
+	display: none;
 	font-size: 1.8vh;
 	left: 0.208%;
 	margin-top: 0.5%;
@@ -35,7 +37,9 @@ textarea {
 	font-size:1.05rem;
 	display:block;
 	box-sizing:border-box;
-	padding:1%;
+	border-radius: .5vw;
+	padding-top: .5vw;
+	padding-bottom: 1.5vw;
 	padding-left:1rem;
 	color:#fff;
 	background:#ffffff5d;
@@ -45,10 +49,8 @@ textarea {
 	box-shadow:10px 9px 42px -5px rgba(0,0,0,0.397),0 0 10px rgba(0,0,0,0.4) inset;
 	text-shadow:0 0 5px #000;
 	border:none;
-	border-radius:5px;
-	width:75%;
-	height:3.15%;
 	overflow:hidden;
+	resize: none;
 	text-overflow:ellipsis
 }
 textarea:focus,
@@ -72,8 +74,8 @@ input:focus {
 }
 .suggestions {
 	list-style-type:none;
-	padding:.5%;
-	padding-left:1.4%;
+	padding:.5vw;
+	padding-left:1vw;
 	font-size:1.05rem;
 	box-sizing:border-box;
 	color:#fff;
@@ -84,7 +86,7 @@ input:focus {
 	box-shadow:10px 9px 42px -5px rgba(0,0,0,0.397);
 	border:2px solid #1d1d1d;
 	border-radius:5px;
-	width:75%;
+	width:100%;
 	animation:suggestions 2s ease-in-out
 }
 @font-face {
